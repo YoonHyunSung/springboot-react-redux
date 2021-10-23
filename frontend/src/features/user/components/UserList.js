@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import {
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import UserListForm from './UserListForm';
 
-//   selectCount,
-// } from './counterSlice';
 
-export default function User() {
-  // const count = useSelector(selectCount);
-  // const dispatch = useDispatch();
-  const [incrementAmount, setIncrementAmount] = useState('2');
+export default function UserList() {
+  const [list, setList] = useState([])
+ 
+  const SERVER = 'http://localhost:8080'
+  const fetchList = () => {
+      axios.get(`${SERVER}/users`)
+      .then(res => setList(res.data) )
+      .catch(err => console.log(err))
+  }
 
-  const incrementValue = Number(incrementAmount) || 0;
-
+  useEffect(() =>{
+    fetchList() 
+  }, [])
   return (
     <div>
       <h1>사용자 목록</h1>
+      <UserListForm list={list}/>
     </div>
   );
 }

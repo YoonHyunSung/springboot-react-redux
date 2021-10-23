@@ -11,12 +11,12 @@ const App = () => {
       <Switch>
         <Route exact path='/' component= {Home}/>
         <Redirect from='/home' to ={'/'}/>
-        <Route exact path='/userAdd' component={UserAdd}/>
-        <Route exact path='/userDetail' component={UserDetail}/>
-        <Route exact path='/userList' component={UserList}/>
-        <Route exact path='/userLogin' component={UserLogin}/>
-        <Route exact path='/userModify' component={UserModify}/>
-        <Route exact path='/userRemove' component={UserRemove}/>
+        <Route exact path='/users/add' component={UserAdd}/>
+        <Route exact path='/users/detail' component={UserDetail}/>
+        <Route exact path='/users/list' component={UserList}/>
+        <Route exact path='/users/login' component={UserLogin}/>
+        <Route exact path='/users/modify' component={UserModify}/>
+        <Route exact path='/users/remove' component={UserRemove}/>
       </Switch>
       </Router>
     </div>

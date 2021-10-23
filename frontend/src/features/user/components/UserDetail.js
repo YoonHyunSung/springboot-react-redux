@@ -1,78 +1,79 @@
-import React, { useState } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import {
-//   decrement,
-//   increment,
-//   incrementByAmount,
-//   incrementAsync,
-//   incrementIfOdd,
-//   selectCount,
-// } from './counterSlice';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 
 export default function UserDetail() {
-  
+    const SERVER = 'http://localhost:8080'
+    const history = useHistory()
+    const [detail, setDetail] = useState({
+        userId:'', userName:'', password:'', email:'', name:'', regDate: new Date().toLocaleDateString()
+    })
+    
+    const fetchOne = () => {
+        const sessionUser = JSON.parse(localStorage.getItem('sessionUser'))
+        axios.get(`${SERVER}/users/${sessionUser.userId}`)
+        .then(res => {
+            setDetail(res.data)
+        })
+        .catch(err => {
+            alert(`${err}`)
+        })
+    }
+    useEffect(() => {
+        fetchOne()
+    }, [])
+
+    const logout = e => {
+        e.preventDefault()
+        localStorage.setItem('sessionUser','')
+        history.push('/')
+    }
+
+
   return (
     <div>
-      <h1>사용자 상세 정보</h1>
-      <figcaption>오늘은 남은 인생이 시작되는 첫쨰날</figcaption>
-      <h1>HyunSung</h1>
-      <p>이메일 : gustjd6495@gmail.com</p>
-      <h2>Who I am ?</h2>
-      <p>dd</p>
-      <h2>GitHub</h2>
-      <ul>
-      <li><a href="https://github.com/jang5714?tab=repositories" target="_blank">GitHub</a></li>
-      </ul>
-      <hr></hr>
-      <h2>skills</h2>
-      <ul>
-      <li>사용 언어
-          <ul>
-              <li><mark>HTML</mark></li>
-              <li><mark>CSS</mark></li>
-              <li>JAVA</li>
-              <li>Javascript</li>
-              <li>Jquery</li>
-              <li>Oracle</li>   
-          </ul>
-      </li>
-      <li>사용 툴
-          <ul>
-              <li>Spring boot</li>
-              <li>Spring Framework</li>
-              <li>docker</li>
-              <li>Intellij</li>
-              <li>pycharm</li>
-          </ul>
-      </li>
-      </ul>
-      <h2>Academic</h2>
-      <table>
-      <caption>학력 사항</caption>
-      <thead>
-              <tr>
-                  <th>출신학교</th>
-                  <th>전공</th>
-                  <th>기간</th>
-                  <th>졸업구분</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr>
-              <td>a 대학교</td>
-                  <td>a</td>
-                  <td>a</td>
-                  <td>졸업</td>
-              </tr>
-              <tr>
-                  <td>a 대학교</td>
-                  <td>a</td>
-                  <td>a</td>
-                  <td>졸업</td>
-              </tr>
-          </tbody>
-      </table>
+         <h1>회원정보</h1>
+    
+        <ul>
+            <li>
+                <label>
+                    <span>회원번호 : {detail.userId} </span>
+                </label>
+                
+            </li>
+            <li>
+                <label>
+                    <span>아이디 : {detail.userName} </span>
+                </label>
+                
+            </li>
+            <li>
+                <label>
+                <span>이메일 :  {detail.email}  </span>
+                </label>
+            </li>
+            <li>
+                <label>
+                    <span>비밀 번호 :  *******  </span>
+                </label>
+            </li>
+            <li>
+                <label>
+                <span>이름 : {detail.name} </span>
+                </label>
+            </li>
+           
+            <li>
+                <input type="button" value="회원정보수정" onClick={()=> history.push('/users/modify')}/>
+            </li>
+            <li>
+                <input type="button" value="로그아웃" onClick={logout}/>
+            </li>
+
+
+        </ul>
+   
     </div>
   );
 }
