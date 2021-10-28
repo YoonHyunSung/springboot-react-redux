@@ -6,15 +6,15 @@ import UserListForm from './UserListForm';
 export default function UserList() {
   const [list, setList] = useState([])
  
-  const SERVER = 'http://localhost:8080'
-  const fetchList = () => {
-      axios.get(`${SERVER}/users`)
+
+  const userList = () => {
+    userList()
       .then(res => setList(res.data) )
       .catch(err => console.log(err))
   }
 
   useEffect(() =>{
-    fetchList() 
+    userList() 
   }, [])
   return (
     <div>

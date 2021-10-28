@@ -4,15 +4,14 @@ import axios from 'axios';
 
 
 export default function UserDetail() {
-    const SERVER = 'http://localhost:8080'
     const history = useHistory()
     const [detail, setDetail] = useState({
         userId:'', userName:'', password:'', email:'', name:'', regDate: new Date().toLocaleDateString()
     })
     
-    const fetchOne = () => {
+    const userDetail = () => {
         const sessionUser = JSON.parse(localStorage.getItem('sessionUser'))
-        axios.get(`${SERVER}/users/${sessionUser.userId}`)
+        userDetail(sessionUser)
         .then(res => {
             setDetail(res.data)
         })
@@ -21,7 +20,7 @@ export default function UserDetail() {
         })
     }
     useEffect(() => {
-        fetchOne()
+        userDetail()
     }, [])
 
     const logout = e => {
@@ -30,23 +29,19 @@ export default function UserDetail() {
         history.push('/')
     }
 
-
   return (
     <div>
          <h1>회원정보</h1>
-    
         <ul>
             <li>
                 <label>
                     <span>회원번호 : {detail.userId} </span>
                 </label>
-                
             </li>
             <li>
                 <label>
                     <span>아이디 : {detail.userName} </span>
                 </label>
-                
             </li>
             <li>
                 <label>
@@ -70,10 +65,7 @@ export default function UserDetail() {
             <li>
                 <input type="button" value="로그아웃" onClick={logout}/>
             </li>
-
-
         </ul>
-   
     </div>
   );
 }

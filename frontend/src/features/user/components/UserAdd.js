@@ -1,42 +1,41 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
-
+import React, { useState, useCallback } from 'react';
+import { useHistory  } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { joinPage } from 'features/user/reducer/userSlice'
 
 
 export default function UserAdd() {
     const history = useHistory()
-    const SERVER = 'http://localhost:8080'
+    const dispatch = useDispatch()
     const [join, setJoin] = useState({
         userName:'', password:'', email:'', name:'', regDate: new Date().toLocaleDateString()
     })
     const {userName, password, email, name} = join
-    const handleChange = e => {
-        const { value, name } = e.target
-        setJoin({
-            ...join,
-            [name] : value
-        })
-    }
+    const handleChange = useCallback(
+        e => {
+            const { value, name } = e.target
+            setJoin({
+                ...join,
+                [name] : value
+            })
+        }, [join]
+    ) 
     
-    const userJoin = joinRequest => 
-                axios.post(`${SERVER}/users`, JSON.stringify(joinRequest),{headers})
-    const headers = {
-        'Content-Type' : 'application/json',
-        'Authorization': 'JWT fefege..'
-    }
-    const handleSubmit = e => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        const joinRequest = {...join}
-        alert(`회원가입 정보: ${JSON.stringify(joinRequest)}`)
-        userJoin(joinRequest)
-        .then(res =>{
-            alert('회원가입 성공')
-            history.push('/users/login')
-        })
-        .catch(err =>{
-            alert(`회원가입 실패 : ${err}`)
-        })
+        e.stopPropagation()
+
+        const json = {
+            'username': join.userName,
+            'password': join.password,
+            'email': join.email,
+            'name': join.name,
+            'regDate': join.regDate
+        }
+        alert(`회원가입 정보: ${JSON.stringify(json)}`)
+        await dispatch(joinPage(json))
+        alert(`${join.userName} 회원가입 환영`)
+        history.push('/users/login')
 
   }
 
@@ -69,7 +68,7 @@ export default function UserAdd() {
             </li>
            
             <li>
-                <input type="submit" value="회원가입"/>
+                <input type="submit" onClick={ e => handleSubmit(e)} value="회원가입"/>
             </li>
 
         </ul>
