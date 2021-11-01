@@ -16,7 +16,7 @@ export default function Navigation() {
   return (
     <div>
         <ul>
-            <li><Link to="home">Home</Link></li>
+            <li><Link to="/home">Home</Link></li>
             <li><Link to="/users/add">UserAdd</Link></li>
             <li><Link to="/users/detail">UserDetail</Link></li>
             <li><Link to="/users/list">UserList</Link></li>
